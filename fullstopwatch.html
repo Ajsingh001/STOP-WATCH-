@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/cssfile/stopwatch.css">
+</head>
+
+<body>
+    <div class="main">
+        <h1>STOPWATCH</h1>
+
+        <div id="val" class="maininput">
+            <input type="text" id="mili" value="00" readonly disabled>
+            <input type="text" id="sec" value="00" readonly disabled>
+            <input type="text" id="mint" value="00" readonly class=".no-blink-cursor" disabled>
+        </div>
+        <div id="val">
+            <input type="text" id="remilli" value="00" class="a" readonly disabled>
+            <input type="text" id="resec" value="00" class="a" readonly disabled>
+            <input type="text" id="remint" value="00" class="a" readonly class=".no-blink-cursor" disabled>
+        </div>
+        <div id="click">
+            <button id="start" onclick="stopwatch()">start</button>
+            <button id="reset" type="reset">Reset</button>
+        </div>
+        <div class="lapcount">
+            <h2> LAP-COUNT</h2>
+            <div class="lapz">
+                <ol id="laplist">
+                    <div>
+                        <h3>Lap</h3>
+                        <ol type="1" class="lap1">
+
+                        </ol>
+                    </div>
+                    <div>
+                        <h3>Lap-time</h3>
+                        <ol class="lap2">
+
+                        </ol>
+                    </div>
+                    <div>
+                        <h3>OverallTime</h3>
+                        <ol class="overalltime">
+
+                        </ol>
+                    </div>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    "use strict"
+    let f1 = 0;
+    let x = false;
+    let stop;
+    let stop1;
+    let stop2;
+    let restop;
+    let restop1;
+    let restop2;
+    const strt = document.querySelector("#start");
+    const lap = document.querySelector(".lapcount");
+    const laplist = document.querySelector(".laplist");
+    let l1 = document.querySelector(".lap2");
+    let lapcount = document.querySelector(".lap1");
+    let overalltime = document.querySelector(".overalltime");
+
+    // second input//
+    const resec = document.querySelector("#resec");
+    const remilli = document.querySelector("#remilli");
+    const remint = document.querySelector("#remint");
+
+
+
+    // button 1//
+
+    function stopwatch() {
+        const mili = document.querySelector("#mili");
+        const sec = document.querySelector("#sec");
+        const mint = document.querySelector("#mint");
+        const strt = document.querySelector("#start");
+        const reset = document.querySelector("#reset");
+        if (x) {
+            reset.textContent = "Reset"
+            strt.textContent = "resume";
+
+            clearInterval(stop);
+            clearInterval(stop1);
+            clearInterval(stop2);
+            clearInterval(restop);
+            clearInterval(restop1);
+            clearInterval(restop2);
+
+        }
+        else {
+            document.querySelector("#reset").textContent = "LAP"
+            strt.textContent = "stop";
+            //The real input//
+            stop = setInterval(() => {
+
+                if (mili.value < 99) {
+                    mili.value = ++mili.value
+                }
+                else {
+                    mili.value = "00"
+                }
+            }, 10);
+
+            stop1 = setInterval(() => {
+                if (sec.value < 59) {
+                    sec.value = ++sec.value
+                }
+                else {
+                    sec.value = "00"
+                }
+            }, 1000);
+
+            stop2 = setInterval(() => {
+                mint.value = ++mint.value
+
+            }, 60000);
+
+
+            // new in//
+            restop = setInterval(() => {
+
+                if (remilli.value < 99) {
+                    remilli.value = ++remilli.value
+                }
+                else {
+                    remilli.value = "00"
+                }
+            }, 10);
+
+            restop1 = setInterval(() => {
+                if (resec.value < 59) {
+                    resec.value = ++resec.value
+                }
+                else {
+                    resec.value = "00"
+                }
+            }, 1000);
+
+            restop2 = setInterval(() => {
+                remint.value = ++remint.value
+
+            }, 60000);
+        }
+        x = !x
+
+    }
+
+
+
+    //button 2//
+
+    document.querySelector("#reset").addEventListener("click", () => {
+
+
+        if (!x) {
+
+
+            const mili = document.querySelector("#mili").value = "00";
+            const sec = document.querySelector("#sec").value = "00";
+            const mint = document.querySelector("#mint").value = "00";
+            document.querySelector("#start").textContent = "START";
+            lapcount.innerHTML = "";
+            f1=0
+            overalltime.innerHTML = "";
+            l1.innerHTML = ""
+            document.querySelector("#remilli").value = "00";
+            document.querySelector("#resec").value = "00";
+            document.querySelector("#remint").value = "00";
+
+        }
+
+        else {
+            //Lap-Count//
+            let count = document.createElement("li");
+            f1 = ++f1;
+            count.textContent = f1;
+            lapcount.append(count)
+
+            //Lap-time//
+            let x = document.createElement("li");
+            x.textContent = `${mili.value}:${sec.value}:${mint.value}`
+            let r1 = overalltime.appendChild(x)
+
+            // // Over-All time//
+            let x2 = document.createElement("li")
+            let a = document.querySelector("#remilli").value
+            let b = document.querySelector("#resec").value
+            let c = document.querySelector("#remint").value
+            let xz = `${a}:${b};${c}`
+            x2.textContent = xz
+            l1.append(x2)
+
+            document.querySelector("#remilli").value = "00";
+            document.querySelector("#resec").value = "00";
+            document.querySelector("#remint").value = "00";
+        }
+
+    })
+</script>
+
+</html>
